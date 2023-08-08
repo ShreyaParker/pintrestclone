@@ -1,17 +1,39 @@
 
 "use client"
 import Image from 'next/image'
-import React from 'react'
-import { useSession, signIn, signOut } from "next-auth/react"
-
+import React, {useEffect} from 'react'
+import app from "../firebase/firebaseConfig";
+import { useSession, signIn } from "next-auth/react"
+import { getFirestore , doc, setDoc } from "firebase/firestore";
 import { HiSearch,HiBell,HiChat } from "react-icons/hi";
 
 import { useRouter } from 'next/navigation';
-
 function Header() {
     const {data: session} = useSession();
     const router = useRouter();
+    const db= getFirestore(app);
 
+    useEffect(()=>{
+        saveUserInfo()
+    },[session])
+    const saveUserInfo = async () => {
+        if (session?.user){
+            await setDoc(doc(db,'user',session?.user.email),{
+                name:session?.user.name,
+                email:session?.user.email,
+                image:session?.user.image,
+            })
+        }
+    }
+    const onCreateClick=()=>{
+        if(session)
+        {
+            router.push('/pinbuilder')
+        }
+        else{
+            signIn()
+        }
+    }
 
     return (
         <div className='flex justify-between
@@ -43,7 +65,7 @@ function Header() {
             <HiChat className='text-[25px] md:text-[60px] text-gray-500 cursor-pointer'/>
             {session?.user ?
                 <Image src={session.user.image}
-                       onClick={() => signOut()}
+                       onClick={() => router.push('/'+session?.user.email)}
                        alt='user-image' width={60} height={60}
                        className='hover:bg-gray-300 p-2
         rounded-full cursor-pointer'/> :
