@@ -1,18 +1,23 @@
 
 "use client"
 import Image from 'next/image'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import app from "../firebase/firebaseConfig";
-import { useSession, signIn } from "next-auth/react"
+import { useSession, signIn,signOut } from "next-auth/react"
 import { getFirestore , doc, setDoc } from "firebase/firestore";
 import { HiSearch,HiBell,HiChat } from "react-icons/hi";
 
 import { useRouter } from 'next/navigation';
+import {RiArrowDropDownLine} from "react-icons/ri";
 function Header() {
+    const[dropdown,setDropdown]=useState(false)
     const {data: session} = useSession();
     const router = useRouter();
     const db= getFirestore(app);
 
+    const showDropdown=()=>{
+        setDropdown(!dropdown)
+    }
     useEffect(()=>{
         saveUserInfo()
     },[session])
@@ -61,9 +66,14 @@ function Header() {
             </div>
             <HiSearch className='text-[25px]
         text-gray-500 md:hidden'/>
-            <HiBell className='text-[25px] md:text-[60px] text-gray-500 cursor-pointer'/>
-            <HiChat className='text-[25px] md:text-[60px] text-gray-500 cursor-pointer'/>
-            {session?.user ?
+            <div >
+                <HiBell className='text-[25px] md:text-[60px] text-gray-500 cursor-pointer'/>
+
+            </div>
+            <div >
+                <HiChat className='text-[25px] md:text-[60px] text-gray-500 cursor-pointer'/>
+            </div>
+                {session?.user ?
                 <Image src={session.user.image}
                        onClick={() => router.push('/'+session?.user.email)}
                        alt='user-image' width={60} height={60}
@@ -73,6 +83,25 @@ function Header() {
                 <button className='font-semibold p-2 px-4 rounded-full'
                         onClick={() => signIn()}>Login</button>}
 
+            {
+                session?.user &&
+                (
+                    <div>
+                        <RiArrowDropDownLine onClick={showDropdown} className='text-[25px] md:text-[60px] text-gray-500 cursor-pointer'/>
+                        {
+                            dropdown && <div
+                                className="absolute top-20 right-0 bg-white"
+                            >
+                                    <button className='bg-gray-200
+                    p-2 px-3 font-semibold mt-5 rounded-full'
+                                            onClick={()=>signOut()}>Logout</button>
+
+
+                            </div>
+                        }
+                    </div>
+                )
+            }
 
         </div>
     )
