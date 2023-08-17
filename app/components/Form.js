@@ -48,7 +48,7 @@ function Form() {
                    userName:session?.user.name,
                    email:session?.user.email,
                    userImage:session?.user.image,
-
+                   id:postId
 
 
                }

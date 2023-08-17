@@ -45,9 +45,10 @@ function Profile({params}) {
             // doc.data() is never undefined for query doc snapshots
 
             setListOfPins(listOfPins=>[...listOfPins,doc.data()]);
-            console.log(listOfPins)
+
         });
     }
+
     return (
         <div>
             {userInfo?

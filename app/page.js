@@ -20,7 +20,7 @@ export default function Home() {
         querySnapshot.forEach((doc) => {
 
             setListOfPins(listOfPins=>[...listOfPins,doc.data()]);
-            console.log(listOfPins)
+
         });
     }
   return (
