@@ -1,6 +1,6 @@
 "use client"
 import React, {useState} from 'react'
-import UploadImage from './UploadImage'
+
 import {useSession} from "next-auth/react";
 import app from "../firebase/firebaseConfig";
 import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
@@ -9,6 +9,7 @@ import {doc, getFirestore, setDoc} from "firebase/firestore";
 import UserTag from "@/app/components/userTag";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
+import UploadImage from "@/app/components/uploadImage";
 
 
 

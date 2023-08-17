@@ -1,6 +1,7 @@
 import React from 'react';
 import UserTag from "@/app/components/userTag";
 
+
 const PinInfo = ({pinDetail}) => {
     const user={
         name:pinDetail.userName,
@@ -18,6 +19,7 @@ const PinInfo = ({pinDetail}) => {
                 {pinDetail.desc}
 
             </h2>
+
 
 
 
